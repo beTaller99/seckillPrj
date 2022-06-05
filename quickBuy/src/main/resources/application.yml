@@ -1,0 +1,9 @@
+
+  redis:
+    host: localhost
+    pool: 6379
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
