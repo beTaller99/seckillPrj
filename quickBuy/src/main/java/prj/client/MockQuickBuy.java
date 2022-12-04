@@ -17,16 +17,21 @@ class QucikBuyThread extends Thread{
 
         //restTemplate.getForEntity()方法模拟秒杀请求
         ResponseEntity<String> entity = restTemplate.getForEntity(
-                "http://localhost:8080/quickBuy/Computer/" + user,
+                "http://localhost:80/quickBuy/Computer/" + user,
                 String.class
         );
         System.out.println(entity.getBody());
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
 
 public class MockQuickBuy {
     public static void main(String[] args) {
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 100; i++) {
             new QucikBuyThread().start();
         }
     }

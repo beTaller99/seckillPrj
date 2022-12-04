@@ -11,8 +11,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date: 2022/6/4 14:33
  */
 @SpringBootApplication
-public class SpringBootAppication {
+public class DatabaseHandler {
     public static void main(String[] args) {
-        SpringApplication.run(SpringBootAppication.class, args);
+        SpringApplication.run(DatabaseHandler.class, args);
     }
 }

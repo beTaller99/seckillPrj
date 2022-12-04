@@ -6,6 +6,7 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import prj.model.BuyRecord;
 
@@ -26,6 +27,10 @@ public class BuyService {
     @Autowired
     AmqpTemplate amqpTemplate;
 
+    @Autowired
+    KafkaTemplate<String, Object> kafkaTemplate;
+
+/*
     public boolean canVisit(String item, int limitTime, int limitNum) {
         long curTime = System.currentTimeMillis();
 
@@ -38,6 +43,7 @@ public class BuyService {
         redisTemplate.expire(item, limitTime, TimeUnit.SECONDS);
         return limitNum >= count;
     }
+*/
 
     public String buy(String item, String person) {
         String luaScript = "local item = KEYS[1] \n" +
@@ -68,7 +74,8 @@ public class BuyService {
             BuyRecord record = new BuyRecord();
             record.setItem(item);
             record.setPerson(person);
-            amqpTemplate.convertAndSend("myExchange", "buyRecordQueue", record);
+//            amqpTemplate.convertAndSend("myExchange", "buyRecordQueue", record);
+            kafkaTemplate.send("purchaseRecord", record);
         }
         return luaResult.toString();
     }

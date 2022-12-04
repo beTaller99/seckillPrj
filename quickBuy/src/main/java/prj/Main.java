@@ -2,6 +2,7 @@ package prj;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * @className: SpringbootApplication
@@ -11,8 +12,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date: 2022/5/26 10:41
  */
 @SpringBootApplication
-public class SpringbootApplication {
+public class Main {
     public static void main(String[] args) {
-        SpringApplication.run(SpringbootApplication.class,args);
+        SpringApplication.run(Main.class,args);
     }
 }
