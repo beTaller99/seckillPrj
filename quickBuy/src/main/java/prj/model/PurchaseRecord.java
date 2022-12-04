@@ -5,14 +5,14 @@ package prj.model;
 import java.io.Serializable;
 
 /**
- * @className: BuyRecord
+ * @className: PurchaseRecord
  * @Description: TODO
  * @version: jdk11
  * @author: asher
  * @date: 2022/5/27 18:40
  */
 
-public class BuyRecord implements Serializable {
+public class PurchaseRecord implements Serializable {
     private String item;
     private String person;
 

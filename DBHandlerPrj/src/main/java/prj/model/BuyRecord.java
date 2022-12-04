@@ -16,9 +16,6 @@ import java.io.Serializable;
 @Entity
 @Table(name = "buyrecord")
 public class BuyRecord implements Serializable {
-
-
-
     @Column(name = "item")
     private String item;
     @Id

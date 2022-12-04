@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @className: KafkaConsumer
- * @Description: TODO
+ * @Description: 此类作为kafka的消费Demo类，与本项目主要逻辑无关
  * @version: jdk11
  * @author: asher
  * @date: 2022/12/4 13:40

@@ -8,9 +8,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import prj.model.BuyRecord;
-
-import java.util.concurrent.TimeUnit;
+import prj.model.PurchaseRecord;
+import prj.util.JsonUtil;
 
 /**
  * @className: BuyService
@@ -25,25 +24,7 @@ public class BuyService {
     RedisTemplate redisTemplate;
 
     @Autowired
-    AmqpTemplate amqpTemplate;
-
-    @Autowired
-    KafkaTemplate<String, Object> kafkaTemplate;
-
-/*
-    public boolean canVisit(String item, int limitTime, int limitNum) {
-        long curTime = System.currentTimeMillis();
-
-        redisTemplate.opsForZSet().add(item, curTime, curTime);
-
-    //解释一下为啥是stop的下标是curTime - limitTime*1000：这样减了20秒之后的结果就是当前时间20秒之前那个时间点
-    //20秒之前的时间点记作 x， 那么x到curTime的这20秒内的请求就不会被删除。就能实现“移除当前时间点到其前20秒之外的请求”
-        redisTemplate.opsForZSet().removeRangeByScore(item, 0, curTime - limitTime*1000);
-        Long count = redisTemplate.opsForZSet().zCard(item);
-        redisTemplate.expire(item, limitTime, TimeUnit.SECONDS);
-        return limitNum >= count;
-    }
-*/
+    KafkaTemplate<String, String> kafkaTemplate;
 
     public String buy(String item, String person) {
         String luaScript = "local item = KEYS[1] \n" +
@@ -71,11 +52,10 @@ public class BuyService {
         ));
 
         if (!luaResult.toString().equals("0")) {
-            BuyRecord record = new BuyRecord();
+            PurchaseRecord record = new PurchaseRecord();
             record.setItem(item);
             record.setPerson(person);
-//            amqpTemplate.convertAndSend("myExchange", "buyRecordQueue", record);
-            kafkaTemplate.send("purchaseRecord", record);
+            kafkaTemplate.send("purchaseRecord", JsonUtil.toJson(record));
         }
         return luaResult.toString();
     }
